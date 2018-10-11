@@ -98,7 +98,7 @@ class ListSeminars extends Component {
             if(count == 0) {
               $listSeminars.prepend(
                 count = 1,
-                '<option id="room-dropdown" Selected>Select a Room</option>'
+                '<option id="room-dropdown" Selected>Select a Seminar</option>'
               );
             } else {
               $listSeminars.prepend(
@@ -112,52 +112,14 @@ class ListSeminars extends Component {
 
     render() {
         return (
-            <div className="custom-wrap seminars">
+            <div className="custom-wrap seminars org-seminars">
                 <h3>Seminars</h3>
                 <a href="#" className="help-btn">System Help</a>
-                <div className="filter-search">
-                    <form>
-                        <div className='col-md-4'>
-                            <label>Search by Room:</label>
-                            <select
-                                className="form-control"
-                                id='rooms'
-                                value=''
-                            />
-                        </div>
-                        <div className='col-md-3'>
-                            <label>Between the Dates:</label>
-                            <input
-                                className="form-control"
-                                type="date"
-                                id=''
-                                value=''
-                                placeholder=""
-                            />
-                        </div>
-                        <div className='col-md-3 sec-date'>
-                            <input
-                                className="form-control"
-                                type="date"
-                                id=''
-                                value=''
-                                placeholder=""
-                            />
-                        </div>
-                        <div className='col-md-2 sec-date'>
-                            <button
-                                className="btn search-button"
-                                type="submit"
-                                id=''
-                                value=''
-                            >Search</button>
-                        </div>
-                    </form> 
-                </div>
+                <a href="#" className="help-btn btn-standard">Add Seminar</a>
                 <ul>
                     {this.returnSeminars()}
                 </ul>
-                <ul className="seminar-list" id="list-seminars"></ul>
+                <ul className="seminar-list organiser-seminars" id="list-seminars"></ul>
             </div>
         );
     };

@@ -19,7 +19,7 @@ h3 {
 .nav-menu {
   margin: 50px;
 }
-.nav-menu a {
+.nav-menu a, .search-button {
   border: 2px solid #333;
   padding: 8px 15px;
   border-radius: 5px;
@@ -29,9 +29,25 @@ h3 {
   transition: 0.3s;
   cursor: pointer;
 }
-.nav-menu a:hover {
+.nav-menu a:hover, .search-button:hover {
   background-color: #333;
   color: #fff;
+}
+.search-button {
+  margin-top: -2px;
+  float: left;
+}
+.filter-search {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+.filter-search form {
+  text-align: left;
+  width: 80%;
+}
+.sec-date {
+  margin-top: 32px;
 }
 .custom-wrap {
   padding: 5% 20%;
@@ -104,7 +120,10 @@ input, select {
 .seminar-card p {
   font-size: 13px;
 }
-.seminar-card a {
+.org-seminars .btn-standard {
+  top: -35px;
+}
+.seminar-card a, .btn-standard {
   border: 2px solid #333;
   padding: 5px 10px;
   font-size: 14px;
@@ -129,4 +148,13 @@ input, select {
 }
 #add-speakers li {
   list-style-type: none;
+}
+.help-btn {
+  top: -30px;
+  margin-right: 65px;
+  float: right;
+  position: relative;
+}
+.organiser-seminars {
+  margin-top: 60px;
 }

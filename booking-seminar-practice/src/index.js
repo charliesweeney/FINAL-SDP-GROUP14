@@ -15,6 +15,7 @@ import UpdateCapacity from './components/rooms/updateCapacity';
 import AddSeminar from './components/Seminars/addSeminar';
 import ListSeminars from './components/Seminars/listSeminars';
 import EditSeminar from './components/Seminars/editSeminar';
+import OrganisersSeminar from './components/Seminars/organisersSeminars';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -23,8 +24,9 @@ ReactDOM.render(
         <BrowserRouter>
             <div>
                 <Switch>
-                    <Route path="/seminars/new"  component={AddSeminar} />
+                    <Route path="/seminars/organiser"  component={OrganisersSeminar} />
                     <Route path="/seminars/edit"  component={EditSeminar} />
+                    <Route path="/seminars/new"  component={AddSeminar} />
                     <Route path="/seminars"  component={ListSeminars} />
                     <Route path="/room/capacity"  component={UpdateCapacity} />
                     <Route path="/" component={App} />
