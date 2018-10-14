@@ -126,7 +126,7 @@ class ListSeminars extends Component {
 }
 
 function mapStateToProps(state) {
-    return { posts: state.posts };
+    return { seminars: state.seminars };
 }
 
 export default connect(mapStateToProps, { fetchSeminars })(ListSeminars); 

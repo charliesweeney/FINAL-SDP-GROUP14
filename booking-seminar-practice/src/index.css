@@ -158,3 +158,10 @@ input, select {
 .organiser-seminars {
   margin-top: 60px;
 }
+.pd-50 {
+  margin-top: 50px;
+}
+.hide {
+  display: none;
+  transition: 5s;
+}

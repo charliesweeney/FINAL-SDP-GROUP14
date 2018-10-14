@@ -26,10 +26,30 @@ class EditSeminar extends Component {
       }
   }
 
-  getSeminar() {
+  getSeminars() {
     var count = 0;
     REF_SEMINARS.on('child_added', snap => {
-      if(count == 0) {
+      this.state.seminars.push({
+          name: snap.val().name
+      });
+
+      const $ = window.$;
+
+      var $listSeminars = $('#seminars');
+      var name =  snap.val().name;
+      $listSeminars.prepend(
+        '<option id="seminar-dropdown" value=' + snap.key + '>' + name + '</option>'
+      );
+
+      // console.log(snap.key);
+    });
+  }
+
+  getSeminar(key) {
+    var count = 0;
+    REF_SEMINARS.on('child_added', snap => {
+      console.log('yes');
+      if(snap.key == key) {
         this.state.seminars.push({
             name: snap.val().name,
             _key: snap.key
@@ -50,7 +70,6 @@ class EditSeminar extends Component {
 
         this.handleInitialize();
 
-        count = 1;
       }
     });
   }
@@ -77,7 +96,7 @@ class EditSeminar extends Component {
           );
         }
 
-      console.log(snap.key);
+      // console.log(snap.key);
     });
   }
 
@@ -156,9 +175,14 @@ class EditSeminar extends Component {
     );
   }
 
+  removeSeminar() {
+    
+  }
+
   componentDidMount() {
-    this.getSeminar();
+    // this.getSeminar('-LNx5p5TsNVlBe6D_ree');
     this.getRooms();
+    this.getSeminars();
   }
 
   onSubmit(values) {
@@ -167,12 +191,29 @@ class EditSeminar extends Component {
     //   this.props.history.push('/');
     // });
   }
-
+  onSemSubmit(values) {
+    this.getSeminar(values);
+  }
+  
   render() {
     const { handleSubmit } = this.props;
+    const { handleSemSubmit } = this.props;
     return (
       <div className="custom-wrap" id="edit-sem">
           <h1>Edit Seminar</h1>
+          <div>
+            <h5>Select a seminar to edit:</h5>
+            <form>
+              <Field
+                id="seminars"
+                name="seminar"
+                type="text"
+                component={this.renderSelect}
+              >
+              </Field>
+              <button>Edit Seminar</button>
+            </form>
+          </div>
           <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
             <div className="">
               <div className="col-md-6">

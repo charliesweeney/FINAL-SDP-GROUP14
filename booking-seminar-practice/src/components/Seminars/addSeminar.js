@@ -22,7 +22,10 @@ class AddSeminar extends Component {
           endTime: '',
           host: '',
           organiser: '', //USER WHO CREATES THE SEMINAR
-          speakers: []
+          speakers: [{
+            speakerName:'',
+            speakerBio: ''
+          }]
       }
   }
 
@@ -138,7 +141,7 @@ class AddSeminar extends Component {
 
   onSubmit(values) {
     this.props.createSeminar(values, () => {
-      this.props.history.push('/');
+      this.props.history.push('/seminars');
     });
   }
 
@@ -286,8 +289,11 @@ function validate(values) {
   if (!values.organiser) {
     errors.organiser = "Assign your Seminar a Organiser";
   }
-  if (!values.speaker) {
-    errors.speaker = "Assign Speaker(s) to your Seminar";
+  if (!values.speakerName) {
+    errors.speakerName = "Assign Speaker a name";
+  }
+  if (!values.speakerBio) {
+    errors.speakerBio = "Assign Speaker a description";
   }
 
   // If errors is empty, the form is fine to submit
