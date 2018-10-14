@@ -37,6 +37,10 @@ export function editSeminar(values, callback) {
   }
 }
 
+export function login() {
+
+}
+
 export function fetchSeminars() {
     const request = REF_SEMINARS.on('child_added', seminar => {
         this.state.seminars.push({

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
 
+import userEmail from './components/users/login';
+
 class App extends Component {
   
   constructor() {
@@ -11,12 +13,16 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log(userEmail);
   }
   
   render() {
     return (
       <div className="nav-menu-wrap">
         <div className="nav-menu">
+          <Link to="/login" className="btn">Login</Link>
+          <Link to="/users/edit" className="btn">Edit Users</Link>
+          <Link to="/users/addNew" className="btn">Add User</Link>
           <Link to="/seminars" className="btn">View Seminars</Link>
           <Link to="/seminars/organiser" className="btn">View Organisers Seminars</Link>
           <Link to="/seminars/new" className="btn">Add Seminar</Link>

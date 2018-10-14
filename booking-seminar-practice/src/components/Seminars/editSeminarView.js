@@ -208,7 +208,6 @@ class EditSeminar extends Component {
       this.props.initialize(initData);
   }
 
-
   componentDidMount() {
     this.getSeminars();
     this.getRooms();
@@ -287,7 +286,6 @@ class EditSeminar extends Component {
         <div className="seminarAttendees hide">
           <h2 className="" id="edit-fields">Edit Seminar Attendees for ~ {this.state.name}</h2>
           <form onSubmit={handleSubmit(this.onSelectSubmit.bind(this))}>
-            
             <div className="button-wrap">
               <a className="btn" onClick={this.refreshPage}>Cancel</a>
               <button type="submit" className="btn btn-primary">Update Attendees</button>

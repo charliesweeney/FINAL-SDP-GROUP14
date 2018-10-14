@@ -19,6 +19,8 @@ const REF_CAPACITY = REF_ROOM.child('capacity');
 // Seminars 
 // const REF_SEMINAR = REF_SEMINARS.child('seminar');
 
+
+
 class ListSeminars extends Component {
 
   constructor() {
@@ -29,7 +31,8 @@ class ListSeminars extends Component {
           rooms: [],
           counter: 0,
           todaysDate: '',
-          fromDate: ''
+          fromDate: '',
+          userName: ''
       }
       this.renderFromDate = this.renderFromDate.bind(this);
   }

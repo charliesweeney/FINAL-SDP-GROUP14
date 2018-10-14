@@ -17,6 +17,9 @@ import EditSeminar from './components/Seminars/editSeminar';
 import OrganisersSeminar from './components/Seminars/organisersSeminars';
 import EditSeminarView from './components/Seminars/editSeminarView';
 import ShowSeminar from './components/Seminars/showSeminar';
+import Login from './components/users/login';
+import EditUsers from './components/users/editUsers';
+import AddUsers from './components/users/addUsers';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -29,6 +32,9 @@ ReactDOM.render(
                     <Route path="/seminars/edit"  component={EditSeminarView} />
                     <Route path="/seminars/new"  component={AddSeminar} />
                     <Route path="/seminars"  component={ListSeminars} />
+                    <Route path="/users/edit"  component={EditUsers} />
+                    <Route path="/users/addNew"  component={AddUsers} />
+                    <Route path="/login"  component={Login} />
                     <Route path="/room/capacity"  component={UpdateCapacity} />
                     <Route path="/" component={App} />
                 </Switch>
