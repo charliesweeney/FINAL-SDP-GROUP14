@@ -3,7 +3,9 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { editSeminar } from '../../actions';
+import * as firebase from 'firebase';
 import { REF_SEMINARS, REF_ROOMS, REF_USERS } from './listSeminars';
+import _ from 'lodash';
 
 class EditSeminar extends Component {
 
@@ -104,20 +106,6 @@ class EditSeminar extends Component {
     );
   }
 
-  // getSeminar(key) {
-  //   var count = 0;
-  //   REF_SEMINARS.on('child_added', snap => {
-  //     console.log("Passed In: " + key);
-  //     if(snap.key == key) {
-  //       console.log("MATCHED");
-  //       this.state.seminars.push({
-  //           name: snap.val().name,
-  //           _key: snap.key
-  //       });
-  //     }
-  //   });
-  // }
-
   getSeminar(key) {
     var count = 0;
     REF_SEMINARS.on('child_added', snap => {
@@ -136,7 +124,7 @@ class EditSeminar extends Component {
           abstract: snap.val().abstract,
           host: snap.val().host,
           organiser: snap.val().organiser,
-          speaker: snap.val().speakerName,
+          speakerName: snap.val().speakerName,
           speakerBio: snap.val().speakerBio
         });
       }
@@ -202,7 +190,7 @@ class EditSeminar extends Component {
        "abstract": this.state.abstract,
        "host": this.state.host,
        "organiser": this.state.organiser,
-       "speaker": this.state.speaker,
+       "speakerName": this.state.speakerName,
        "speakerBio": this.state.speakerBio
       };
       this.props.initialize(initData);
@@ -215,10 +203,6 @@ class EditSeminar extends Component {
     this.getHosts();
   }
 
-  // componentDidUpdate() {
-  //   this.handleInitialize();
-  // }
-
   refreshPage(){ 
     window.location.reload(); 
   }
@@ -227,11 +211,6 @@ class EditSeminar extends Component {
     const $ = window.$;
     $('.seminarFields').removeClass("hide");
     $('.infoOrAttendee').addClass("hide");
-  }
-
-  showSeminarAttendees(){ 
-    const $ = window.$;
-    $('.seminarAttendees').removeClass("hide");
   }
 
   onSelectSubmit(values) {
@@ -246,8 +225,52 @@ class EditSeminar extends Component {
  
   onSubmit(values) {
     REF_SEMINARS.child(this.state.key).set(values);
-    this.callfunction();
+    // this.callfunction();
     // console.log(this.state.key);
+  }
+  
+  addAttendee(values) {
+    var newPostKey = firebase.database().ref().child(this.state.key + '/attendees/').push().key;
+    REF_SEMINARS.child(this.state.key + '/attendees/' + newPostKey).set({
+      'givenName' : values.givenName, 
+      'surname' : values.surname,
+      'email' : values.email
+    });
+  }
+
+
+  deleteAttendee(key) {
+    REF_SEMINARS.child(this.state.key + '/attendees/' + key).remove();
+    window.location.replace("/");
+  }
+
+  confirmDeleteSeminar() {
+    const $ = window.$;
+    $('.edit-gateway').addClass("hide");
+    $('.confirmDelete').removeClass("hide");
+  }
+  deleteUser() {
+    REF_SEMINARS.child(this.state.key).remove();
+    window.location.replace("/");
+  }
+
+  showSeminarAttendees(){ 
+    const $ = window.$;
+    $('.ENSeminarAttendees').removeClass("hide");
+    $('.infoOrAttendee').addClass("hide");
+    while(!this.state.key) {
+
+    }
+    console.log(this.state.key);
+    var $listUsers = $('#attendees');
+    REF_SEMINARS.child('-LNu78gsGLhCSRrAct2F/attendees').on('child_added', snap => {
+      var name =  snap.val().givenName + snap.val().surname;
+      var email =  snap.val().email;
+      var key =  snap.key;
+      $listUsers.prepend(
+        '<li id="users-dropdown" onClick={' + this.deleteAttendee(key) + '} value=' + name + '>' + name + '</option>'
+      )
+    });
   }
   
   render() {
@@ -277,7 +300,7 @@ class EditSeminar extends Component {
           <form onSubmit={handleSubmit(this.onSelectSubmit.bind(this))}>
             <div className="button-wrap">
               <a className="btn" onClick={this.refreshPage}>Cancel</a>
-              <button type="submit" className="btn btn-primary">Edit/View Attendees</button>
+              <button type="submit" className="btn btn-primary" onClick={this.showSeminarAttendees}>Edit/View Attendees</button>
               <button type="submit" className="btn btn-primary" onClick={this.showSeminarInfo}>Edit/View Seminar</button>
             </div>
           </form>
@@ -293,7 +316,7 @@ class EditSeminar extends Component {
           </form>
         </div>
 
-        <div className="seminarFields hide">
+        <div className="seminarFields hide edit-gateway">
           <h2 className="" id="edit-fields">Edit Seminar Information ~ {this.state.name}</h2>
           <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
             <div className="">
@@ -371,7 +394,7 @@ class EditSeminar extends Component {
                 <Field
                   // label="Speaker(s)"
                   placeholder="Speaker(s)"
-                  name="speaker"
+                  name="speakerName"
                   type="text"
                   component={this.renderField}
                   />
@@ -387,8 +410,65 @@ class EditSeminar extends Component {
             </div>
             <div className="button-wrap">
               <a className="btn" onClick={this.refreshPage}>Cancel</a>
-              <button className="btn btn-danger">Delete Seminar</button>
+              <button className="btn btn-danger" onClick={this.confirmDeleteSeminar}>Delete Seminar</button>
               <button type="submit" className="btn btn-primary">Update</button>
+            </div>
+          </form>
+        </div>
+
+        <div className="confirmDelete hide">
+          <h2 className="" id="edit-fields">Deleting Seminar ~ {this.state.name}</h2>
+          <form onSubmit={handleSubmit(this.deleteUser.bind(this))}>
+            <div className="button-wrap">
+              <a className="btn" onClick={this.refreshPage}>Cancel</a>
+              <button type="submit" className="btn btn-primary" onClick={this.confirmDeleteSeminar}>Confirm Delete</button>
+            </div>
+          </form>
+        </div>
+
+        <div className="SeminarAttendees hide">
+        <h2>Adding A New Attendee</h2>
+          <form onSubmit={handleSubmit(this.addAttendee.bind(this))}>
+            <div className="">
+              <div className="col-md-6">
+                <ul id="attendees"></ul>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className="ENSeminarAttendees hide">
+          <h2>Adding A New Attendee</h2>
+          <ul id="attendees"></ul>
+          <form onSubmit={handleSubmit(this.addAttendee.bind(this))}>
+            <div className="">
+              <div className="col-md-6">
+                <label>Attendees Given Name</label>
+                <Field
+                  placeholder="Given Name"
+                  name="givenName"
+                  type="text"
+                  component={this.renderField}
+                />
+                <label>Attendees Surname</label>
+                <Field
+                  placeholder="Surname"
+                  name="surname"
+                  type="text"
+                  component={this.renderField}
+                />
+                <label>Attendees Email</label>
+                <Field
+                  placeholder="Email"
+                  name="email"
+                  type="text"
+                  component={this.renderField}
+                />
+              </div>
+            </div>
+            <div className="button-wrap">
+              <a className="btn" onClick={this.refreshPage}>Cancel</a>
+              <button type="submit" className="btn btn-primary">Add Attendee</button>
             </div>
           </form>
         </div>

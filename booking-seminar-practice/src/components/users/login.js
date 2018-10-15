@@ -70,6 +70,12 @@ class Login extends Component {
     });
   }
   
+  preLoginUser(values) {
+    while(values.email == '') {
+      // Waiting to retrieve email input
+    }
+    this.loginUser(values);
+  }
   loginUser(values) {
     REF_UTS_DB.on('child_added', snap => {
       if(values.email == snap.val().email) {
@@ -86,7 +92,7 @@ class Login extends Component {
         <div>
           Log in 
         </div> 
-        <form onSubmit={handleSubmit(this.loginUser.bind(this))}>
+        <form onSubmit={handleSubmit(this.preLoginUser.bind(this))}>
           <div className="form-group">
             <label> Email address </label> 
             <Field
